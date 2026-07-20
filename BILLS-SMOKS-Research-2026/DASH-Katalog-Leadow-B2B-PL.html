@@ -117,7 +117,7 @@
             --bg-radial-1: rgba(37, 99, 235, 0.11);
             --bg-radial-2: rgba(79, 136, 247, 0.07);
             --bg-radial-3: rgba(99, 102, 241, 0.04);
-            --filter-active-border: #34d399;
+            --filter-active-border: rgba(52, 211, 153, 0.35);
             --filter-active-glow: rgba(52, 211, 153, 0.18);
         }
 
@@ -219,7 +219,7 @@
             --bg-radial-1: rgba(37, 99, 235, 0.05);
             --bg-radial-2: rgba(79, 136, 247, 0.03);
             --bg-radial-3: rgba(99, 102, 241, 0.02);
-            --filter-active-border: #10b981;
+            --filter-active-border: rgba(16, 185, 129, 0.35);
             --filter-active-glow: rgba(16, 185, 129, 0.15);
         }
 
@@ -959,9 +959,12 @@
                 <!-- Footer & Pagination -->
                 <div class="table-footer">
                     <div class="footer-info" id="footer-count">Pokazano 0 z 0 rekordów</div>
-                    <div class="pagination-controls">
+                    <div class="pagination-controls" id="pagination-controls-wrapper">
                         <button class="btn" id="btn-prev"><i class="ri-arrow-left-s-line"></i> Wstecz</button>
                         <button class="btn" id="btn-next">Dalej <i class="ri-arrow-right-s-line"></i></button>
+                    </div>
+                    <div id="active-filter-pills-wrapper" style="display: none; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                        <!-- Active filter pills -->
                     </div>
                 </div>
 
@@ -11620,12 +11623,90 @@
             const endIdx = pageSize === -1 ? filteredData.length : Math.min(startIdx + pageSize, filteredData.length);
             const pagedLeads = filteredData.slice(startIdx, endIdx);
             
-            // Rerender footer info
-            document.getElementById('footer-count').textContent = `Pokazano ${filteredData.length > 0 ? startIdx + 1 : 0}-${endIdx} z ${filteredData.length} rekordów`;
-            
-            // Enable/disable page buttons
-            document.getElementById('btn-prev').disabled = currentPage === 1;
-            document.getElementById('btn-next').disabled = endIdx >= filteredData.length;
+            const searchInput = document.getElementById('filter-search');
+            const prioritySelect = document.getElementById('filter-priority');
+            const regionSelect = document.getElementById('filter-region');
+            const scaleSelect = document.getElementById('filter-scale');
+            const statusSelect = document.getElementById('filter-status');
+
+            const isSearchActive = searchInput && searchInput.value.trim() !== "";
+            const isPriorityActive = prioritySelect && prioritySelect.value !== "all";
+            const isRegionActive = regionSelect && regionSelect.value !== "all";
+            const isScaleActive = scaleSelect && scaleSelect.value !== "all";
+            const isStatusActive = statusSelect && statusSelect.value !== "all";
+            const isAnyActive = isSearchActive || isPriorityActive || isRegionActive || isScaleActive || isStatusActive;
+
+            const paginationControls = document.getElementById('pagination-controls-wrapper');
+            const pillsWrapper = document.getElementById('active-filter-pills-wrapper');
+
+            if (filteredData.length === 0) {
+                if (isAnyActive) {
+                    document.getElementById('footer-count').innerHTML = `<span style="color: var(--text-secondary);"><i class="ri-error-warning-line" style="vertical-align: middle; color: var(--warning); margin-right: 0.35rem; font-size: 1.1rem;"></i><strong>Brak wyników.</strong> Spróbuj zmienić konfigurację filtrów.</span>`;
+                } else {
+                    document.getElementById('footer-count').textContent = `Brak wyników.`;
+                }
+
+                if (paginationControls && pillsWrapper) {
+                    paginationControls.style.display = 'none';
+                    pillsWrapper.style.display = 'flex';
+                    pillsWrapper.innerHTML = '';
+
+                    const activeFilters = [];
+                    if (isSearchActive) activeFilters.push({ id: 'filter-search', label: `Szukaj: "${searchInput.value.trim()}"` });
+                    if (isPriorityActive) activeFilters.push({ id: 'filter-priority', label: `Priorytet: ${prioritySelect.value.split(' — ')[0]}` });
+                    if (isRegionActive) activeFilters.push({ id: 'filter-region', label: `Województwo: ${regionSelect.value}` });
+                    if (isScaleActive) activeFilters.push({ id: 'filter-scale', label: `Skala: ${scaleSelect.value}` });
+                    if (isStatusActive) activeFilters.push({ id: 'filter-status', label: `Status: ${statusSelect.value}` });
+
+                    activeFilters.forEach(f => {
+                        const pill = document.createElement('span');
+                        pill.className = 'badge badge-priority-d';
+                        pill.style.cursor = 'pointer';
+                        pill.style.display = 'inline-flex';
+                        pill.style.alignItems = 'center';
+                        pill.style.gap = '0.35rem';
+                        pill.style.padding = '0.35rem 0.6rem';
+                        pill.style.borderRadius = '0.5rem';
+                        pill.style.fontSize = '0.72rem';
+                        pill.style.fontWeight = '600';
+                        pill.style.transition = 'all 0.2s';
+                        pill.innerHTML = `${f.label} <i class="ri-close-line" style="font-weight: 700; font-size: 0.85rem; color: var(--danger);"></i>`;
+                        
+                        pill.addEventListener('mouseover', () => {
+                            pill.style.borderColor = 'var(--danger)';
+                            pill.style.backgroundColor = 'rgba(239, 68, 68, 0.08)';
+                        });
+                        pill.addEventListener('mouseout', () => {
+                            pill.style.borderColor = '';
+                            pill.style.backgroundColor = '';
+                        });
+
+                        pill.addEventListener('click', () => {
+                            const el = document.getElementById(f.id);
+                            if (el.tagName === 'INPUT') {
+                                el.value = '';
+                            } else {
+                                el.value = 'all';
+                            }
+                            currentPage = 1;
+                            applyFilters();
+                        });
+                        pillsWrapper.appendChild(pill);
+                    });
+                }
+            } else {
+                if (paginationControls && pillsWrapper) {
+                    paginationControls.style.display = 'flex';
+                    pillsWrapper.style.display = 'none';
+                }
+
+                // Rerender footer info
+                document.getElementById('footer-count').textContent = `Pokazano ${filteredData.length > 0 ? startIdx + 1 : 0}-${endIdx} z ${filteredData.length} rekordów`;
+                
+                // Enable/disable page buttons
+                document.getElementById('btn-prev').disabled = currentPage === 1;
+                document.getElementById('btn-next').disabled = endIdx >= filteredData.length;
+            }
             
             pagedLeads.forEach(r => {
                 const isExpanded = expandedRowId === r["Rank"];
