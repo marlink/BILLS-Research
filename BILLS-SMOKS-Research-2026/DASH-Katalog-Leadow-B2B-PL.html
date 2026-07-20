@@ -509,7 +509,12 @@
         .filter-input:focus {
             outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(79, 136, 247, 0.15);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+            background-color: var(--input-focus-bg);
+        }
+        .filter-input.filter-active {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
             background-color: var(--input-focus-bg);
         }
         select.filter-input option {
@@ -858,6 +863,12 @@
 
             <!-- Filters Panel -->
             <div class="filter-panel">
+                <div class="filter-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.875rem;">
+                    <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.35rem;">
+                        <i class="ri-filter-2-line" style="color: var(--accent); font-size: 0.95rem;"></i> Filtry i Wyszukiwanie
+                    </span>
+                    <span id="filter-results-count" class="badge badge-priority-b" style="display: none; font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.6rem;">Znaleziono: 0 z 0</span>
+                </div>
                 <div class="filter-grid">
                     
                     <!-- Search query -->
@@ -897,12 +908,15 @@
                     </div>
 
                     <!-- Status -->
-                    <div class="filter-group">
+                    <div class="filter-group" style="position: relative;">
                         <label for="filter-status">Status</label>
                         <select id="filter-status" class="filter-input">
                             <option value="all">Wszystkie</option>
                             <!-- Dynamic options -->
                         </select>
+                        <a href="#" id="reset-filters" style="position: absolute; right: 0; bottom: -1.15rem; font-size: 0.72rem; color: var(--text-secondary); text-decoration: none; font-weight: 600; opacity: 0.4; pointer-events: none; transition: all 0.2s ease; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.2rem;">
+                            <i class="ri-refresh-line"></i> Resetuj filtry
+                        </a>
                     </div>
                 </div>
             </div>
@@ -11472,6 +11486,21 @@
                     applyFilters();
                 });
             });
+
+            // Reset filters listener
+            const resetBtn = document.getElementById('reset-filters');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('filter-search').value = '';
+                    document.getElementById('filter-priority').value = 'all';
+                    document.getElementById('filter-region').value = 'all';
+                    document.getElementById('filter-scale').value = 'all';
+                    document.getElementById('filter-status').value = 'all';
+                    currentPage = 1;
+                    applyFilters();
+                });
+            }
         }
 
         function populateSelect(id, items) {
@@ -11489,6 +11518,56 @@
         function strContains(str, search) {
             if (!str) return false;
             return str.toLowerCase().includes(search.toLowerCase());
+        }
+
+        function updateFilterUI() {
+            const searchInput = document.getElementById('filter-search');
+            const prioritySelect = document.getElementById('filter-priority');
+            const regionSelect = document.getElementById('filter-region');
+            const scaleSelect = document.getElementById('filter-scale');
+            const statusSelect = document.getElementById('filter-status');
+
+            if (!searchInput) return; // Guard if elements aren't initialized yet
+
+            const isSearchActive = searchInput.value.trim() !== "";
+            const isPriorityActive = prioritySelect.value !== "all";
+            const isRegionActive = regionSelect.value !== "all";
+            const isScaleActive = scaleSelect.value !== "all";
+            const isStatusActive = statusSelect.value !== "all";
+
+            const isAnyActive = isSearchActive || isPriorityActive || isRegionActive || isScaleActive || isStatusActive;
+
+            // Highlight outlines
+            searchInput.classList.toggle('filter-active', isSearchActive);
+            prioritySelect.classList.toggle('filter-active', isPriorityActive);
+            regionSelect.classList.toggle('filter-active', isRegionActive);
+            scaleSelect.classList.toggle('filter-active', isScaleActive);
+            statusSelect.classList.toggle('filter-active', isStatusActive);
+
+            // Reset button state
+            const resetBtn = document.getElementById('reset-filters');
+            if (resetBtn) {
+                if (isAnyActive) {
+                    resetBtn.style.opacity = '1';
+                    resetBtn.style.pointerEvents = 'auto';
+                    resetBtn.style.color = 'var(--accent)';
+                } else {
+                    resetBtn.style.opacity = '0.4';
+                    resetBtn.style.pointerEvents = 'none';
+                    resetBtn.style.color = 'var(--text-secondary)';
+                }
+            }
+
+            // Results count badge
+            const countBadge = document.getElementById('filter-results-count');
+            if (countBadge) {
+                if (isAnyActive) {
+                    countBadge.textContent = `Znaleziono: ${filteredData.length} z ${leadsData.length}`;
+                    countBadge.style.display = 'inline-flex';
+                } else {
+                    countBadge.style.display = 'none';
+                }
+            }
         }
 
         function applyFilters() {
@@ -11520,6 +11599,7 @@
             });
             
             renderLeads();
+            updateFilterUI();
         }
 
         function renderLeads() {
