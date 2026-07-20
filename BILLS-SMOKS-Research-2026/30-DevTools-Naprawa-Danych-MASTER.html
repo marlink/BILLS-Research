@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Raport naprawy danych V2</title>
+<style>
+:root { font-family: Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:#182236; background:#f3f5f8; }
+body { margin:0; }
+header { background:#182236; color:white; padding:42px 5vw 34px; }
+h1 { margin:0 0 10px; font-size:34px; }
+header p { max-width:900px; margin:0; color:#cbd4e2; line-height:1.55; }
+main { padding:28px 5vw 70px; }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; }
+.card,section { background:white; border:1px solid #dce2eb; border-radius:12px; }
+.card { padding:18px; }
+.card strong { display:block; font-size:28px; margin-bottom:5px; }
+section { margin-top:18px; overflow:hidden; }
+section h2 { margin:0; padding:19px 21px; border-bottom:1px solid #e6eaf0; font-size:20px; }
+.copy { padding:18px 21px; line-height:1.6; color:#4d5b72; }
+.table-wrap { overflow:auto; }
+table { width:100%; border-collapse:collapse; min-width:760px; }
+th,td { text-align:left; vertical-align:top; padding:11px 13px; border-bottom:1px solid #e8ecf1; font-size:13px; }
+th { background:#f5f7fa; color:#344158; }
+.ok { color:#15633a; font-weight:700; }
+.warn { color:#995d16; font-weight:700; }
+code { background:#edf1f6; padding:2px 5px; border-radius:4px; }
+</style>
+</head>
+<body>
+<header>
+<h1>Naprawa danych hurtowników — V2</h1>
+<p>Regiony, kontakty, identyfikatory, klasyfikacja kategorii, aliasy i scoring zostały przebudowane do jednego spójnego modelu. Dane źródłowe pozostają przy każdym rekordzie w <code>_raw</code>.</p>
+</header>
+<main>
+<div class="cards">
+<div class="card"><strong>224</strong>rekordy zachowane</div>
+<div class="card"><strong>0</strong>puste regiony</div>
+<div class="card"><strong>0</strong>rekordy bez wyniku</div>
+<div class="card"><strong>39</strong>zaakceptowane aliasy</div>
+<div class="card"><strong>58</strong>odrzucone aliasy zachowane osobno</div>
+<div class="card"><strong>33.1</strong>średni wynik</div>
+</div>
+
+<section>
+<h2>Co zostało poprawione</h2>
+<div class="copy">
+<ul>
+<li><span class="ok">Region:</span> <code>region</code> nie jest już pusty. Dane są pobierane z <code>regions</code>, następnie ostrożnie wnioskowane z miasta, a gdy brak podstaw — oznaczone jako <code>Nieustalony</code>, bez zgadywania.</li>
+<li><span class="ok">Kontakty i identyfikatory:</span> istnieją wyłącznie w obiektach <code>contacts</code> i <code>identifiers</code>. Pole <code>value_sources</code> pokazuje, z którego starego pola pochodzi wartość.</li>
+<li><span class="ok">Kategorie:</span> stare <code>category/categories</code> są rozdzielone na typ podmiotu, segment partnera, kanały sprzedaży, pozycję rynkową i kategorie produktów.</li>
+<li><span class="ok">Aliasy:</span> prawdziwe aliasy pozostają w <code>company.aliases</code>. Obce firmy, cytowania, produkty i fragmenty adresów trafiają do <code>rejected_alias_candidates</code>.</li>
+<li><span class="ok">Scoring:</span> każdy rekord ma wynik 0–100, priorytet, potencjał, kompletność, poziom pewności, następny krok i pełną rozpiskę komponentów.</li>
+<li><span class="ok">Źródło:</span> pełny oryginalny rekord nadal znajduje się w <code>_raw</code>.</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Pochodzenie regionów</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Metoda</th><th>Rekordy</th></tr></thead>
+<tbody><tr><td>source_regions</td><td>160</td></tr><tr><td>unknown</td><td>57</td></tr><tr><td>inferred_from_city</td><td>4</td></tr><tr><td>non_polish</td><td>2</td></tr><tr><td>inferred_nationwide</td><td>1</td></tr></tbody>
+</table></div>
+</section>
+
+<section>
+<h2>Rozkład priorytetów</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Priorytet</th><th>Rekordy</th></tr></thead>
+<tbody><tr><td>B</td><td>13</td></tr><tr><td>C</td><td>29</td></tr><tr><td>D</td><td>180</td></tr><tr><td>exclude</td><td>2</td></tr></tbody>
+</table></div>
+</section>
+
+<section>
+<h2>25 najwyżej ocenionych rekordów według obecnych danych</h2>
+<div class="copy"><span class="warn">Ważne:</span> wysoki wynik przy niskiej pewności nadal wymaga weryfikacji. Wynik nie udaje, że brak danych oznacza fakt negatywny.</div>
+<div class="table-wrap"><table>
+<thead><tr><th>Firma</th><th>Region</th><th>Segment</th><th>Wynik</th><th>Priorytet</th><th>Pewność</th><th>Następny krok</th></tr></thead>
+<tbody><tr><td>Orion Tobacco Poland Sp. z o.o.</td><td>Mazowieckie</td><td>manufacturer</td><td>74</td><td>B</td><td>high</td><td>sales_outreach</td></tr><tr><td>Tobacchem</td><td>Ogólnopolska</td><td>manufacturer</td><td>72</td><td>B</td><td>medium</td><td>find_sales_email</td></tr><tr><td>Elenpipe</td><td>Małopolskie</td><td>traditional_or_specialist_wholesale</td><td>70</td><td>B</td><td>high</td><td>sales_outreach</td></tr><tr><td>PGT — Polska Grupa Tytoniowa</td><td>Zachodniopomorskie</td><td>vape_wholesale</td><td>70</td><td>B</td><td>high</td><td>sales_outreach</td></tr><tr><td>Promotorzy Sp. z o.o.</td><td>Ogólnopolska</td><td>manufacturer</td><td>70</td><td>B</td><td>medium</td><td>find_sales_email</td></tr><tr><td>Trezo Sp. z o.o.</td><td>Śląskie</td><td>manufacturer</td><td>68</td><td>B</td><td>medium</td><td>find_sales_email</td></tr><tr><td>BILLS Sp. z o.o. (marka Smoks)</td><td>Wielkopolskie</td><td>traditional_or_specialist_wholesale</td><td>66</td><td>B</td><td>high</td><td>sales_outreach</td></tr><tr><td>King Hurt — HQ + Branches</td><td>Zachodniopomorskie</td><td>traditional_or_specialist_wholesale</td><td>65</td><td>B</td><td>high</td><td>sales_outreach</td></tr><tr><td>Dopalenia.pl</td><td>Łódzkie</td><td>traditional_or_specialist_wholesale</td><td>64</td><td>B</td><td>high</td><td>sales_outreach</td></tr><tr><td>Huzark</td><td>Nieustalony</td><td>manufacturer</td><td>62</td><td>B</td><td>medium</td><td>find_sales_email</td></tr><tr><td>BongoGo.pl</td><td>Ogólnopolska</td><td>headshop_accessories</td><td>61</td><td>B</td><td>high</td><td>sales_outreach</td></tr><tr><td>KentDruk (P.W. Kentdruk)</td><td>Małopolskie</td><td>manufacturer</td><td>60</td><td>B</td><td>high</td><td>sales_outreach</td></tr><tr><td>Trafika.pl</td><td>Ogólnopolska</td><td>vape_wholesale</td><td>60</td><td>B</td><td>high</td><td>sales_outreach</td></tr><tr><td>Donmarco</td><td>Ogólnopolska</td><td>traditional_or_specialist_wholesale</td><td>58</td><td>C</td><td>medium</td><td>enrich_record</td></tr><tr><td>CK Complex</td><td>Ogólnopolska</td><td>traditional_or_specialist_wholesale</td><td>55</td><td>C</td><td>low</td><td>enrich_record</td></tr><tr><td>Hurtownia Kaziool</td><td>Ogólnopolska</td><td>traditional_or_specialist_wholesale</td><td>54</td><td>C</td><td>medium</td><td>enrich_record</td></tr><tr><td>Polski Tytoń PHP S.A.</td><td>Ogólnopolska</td><td>vape_wholesale</td><td>53</td><td>C</td><td>high</td><td>enrich_record</td></tr><tr><td>PRODAP</td><td>Ogólnopolska</td><td>traditional_or_specialist_wholesale</td><td>53</td><td>C</td><td>medium</td><td>enrich_record</td></tr><tr><td>i-Want! (Hurtownia i-Want!)</td><td>Ogólnopolska</td><td>traditional_or_specialist_wholesale</td><td>52</td><td>C</td><td>medium</td><td>enrich_record</td></tr><tr><td>West Trading</td><td>Zachodniopomorskie</td><td>vape_wholesale</td><td>51</td><td>C</td><td>medium</td><td>enrich_record</td></tr><tr><td>SklepTytoniowy.pl</td><td>Ogólnopolska</td><td>traditional_or_specialist_wholesale</td><td>50</td><td>C</td><td>medium</td><td>enrich_record</td></tr><tr><td>TwojePapierosy.pl</td><td>Ogólnopolska</td><td>traditional_or_specialist_wholesale</td><td>50</td><td>C</td><td>medium</td><td>enrich_record</td></tr><tr><td>MRC Trade</td><td>Ogólnopolska</td><td>manufacturer</td><td>50</td><td>C</td><td>low</td><td>enrich_record</td></tr><tr><td>Tobacco Concept Factory (TCF)</td><td>Ogólnopolska</td><td>traditional_or_specialist_wholesale</td><td>49</td><td>C</td><td>low</td><td>enrich_record</td></tr><tr><td>MAGNUS</td><td>Ogólnopolska</td><td>manufacturer</td><td>49</td><td>C</td><td>low</td><td>enrich_record</td></tr></tbody>
+</table></div>
+</section>
+</main>
+</body>
+</html>

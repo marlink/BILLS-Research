@@ -1,0 +1,24 @@
+{
+  "version": "2.0",
+  "total_before_penalty": 100,
+  "risk_penalty_min": -20,
+  "components": {
+    "strategic_fit": 25,
+    "scale_and_reach": 15,
+    "assortment_fit": 15,
+    "sales_channels": 15,
+    "operational_capability": 10,
+    "contactability": 10,
+    "evidence_quality": 10,
+    "risk_penalty": -20
+  },
+  "priority_bands": {
+    "A1": "85-100",
+    "A2": "75-84",
+    "B": "60-74",
+    "C": "40-59",
+    "D": "0-39",
+    "exclude": "record outside Poland or explicit disqualifier"
+  },
+  "important_note": "Score uses only available evidence. Missing values reduce data completeness and confidence, but are not automatically treated as negative facts."
+}

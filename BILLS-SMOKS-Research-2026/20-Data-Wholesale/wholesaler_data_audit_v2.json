@@ -1,0 +1,47 @@
+{
+  "schema_version": "2.0",
+  "input_records": 224,
+  "output_records": 224,
+  "checks": {
+    "blank_region_values": 0,
+    "region_unknown_explicit": 57,
+    "top_level_email_or_phone_in_normalized_schema": 0,
+    "top_level_nip_or_krs_in_normalized_schema": 0,
+    "records_with_legacy_category_field_in_normalized_schema": 0,
+    "records_without_score": 0,
+    "records_without_raw_source": 0
+  },
+  "region_sources": {
+    "source_regions": 160,
+    "unknown": 57,
+    "inferred_from_city": 4,
+    "inferred_nationwide": 1,
+    "non_polish": 2
+  },
+  "aliases": {
+    "accepted": 39,
+    "rejected_and_preserved_separately": 58
+  },
+  "priority_distribution": {
+    "D": 180,
+    "C": 29,
+    "B": 13,
+    "exclude": 2
+  },
+  "potential_distribution": {
+    "low": 191,
+    "high": 8,
+    "medium": 23,
+    "excluded": 2
+  },
+  "score_confidence_distribution": {
+    "low": 91,
+    "medium": 121,
+    "high": 12
+  },
+  "score_range": {
+    "min": 0,
+    "max": 74,
+    "average": 33.1
+  }
+}

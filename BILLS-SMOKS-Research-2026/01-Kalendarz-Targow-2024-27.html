@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raport Strategiczny B2B | BILLS Sp. z o.o. | Powermatic & Hawk-Matic</title>
+    <style>
+        :root {
+            --navy: #0F2027;
+            --navy-light: #203A43;
+            --gold: #D4AF37;
+            --gold-light: #F5E6A3;
+            --bg: #F4F7F6;
+            --text: #2D2D2D;
+            --card-bg: #FFFFFF;
+            --accent-green: #2E7D32;
+            --accent-red: #C62828;
+            --accent-blue: #1565C0;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
+        }
+        header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 60%, #2C5364 100%);
+            color: white;
+            padding: 60px 50px;
+            text-align: center;
+            border-bottom: 6px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.4em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        header .subtitle {
+            margin: 12px 0 0;
+            font-size: 1.15em;
+            color: #CFD8DC;
+            font-weight: 300;
+        }
+        .badge {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--navy);
+            padding: 6px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.85em;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+        .content {
+            padding: 50px;
+        }
+        h2 {
+            color: var(--navy);
+            border-left: 5px solid var(--gold);
+            padding-left: 18px;
+            margin-top: 55px;
+            margin-bottom: 20px;
+            font-size: 1.55em;
+        }
+        h3 {
+            color: var(--navy-light);
+            margin-top: 30px;
+            font-size: 1.2em;
+        }
+        h4 {
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 24px;
+        }
+        .card {
+            background: var(--bg);
+            padding: 24px;
+            border-radius: 10px;
+            border-left: 4px solid var(--gold);
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-2px); }
+        .card-green { border-left-color: var(--accent-green); }
+        .card-blue { border-left-color: var(--accent-blue); }
+        .card-red { border-left-color: var(--accent-red); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.92em;
+        }
+        th {
+            background: var(--navy);
+            color: white;
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 13px 12px;
+            border-bottom: 1px solid #E0E0E0;
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background-color: #FAFAFA; }
+        tr:hover { background-color: #F0F4F8; }
+        .highlight {
+            background: linear-gradient(135deg, #FFFDE7, #FFF9C4);
+            border: 1px solid var(--gold);
+            padding: 24px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+        .highlight-blue {
+            background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+            border: 1px solid var(--accent-blue);
+            padding: 24px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+        .event-card {
+            background: white;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            padding: 28px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--navy));
+        }
+        .event-date {
+            display: inline-block;
+            background: var(--navy);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 15px;
+            font-size: 0.82em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .event-location {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 12px;
+        }
+        .tag {
+            display: inline-block;
+            background: var(--gold-light);
+            color: var(--navy);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.78em;
+            font-weight: 600;
+            margin: 2px 3px;
+        }
+        .tag-green {
+            background: #C8E6C9;
+            color: #1B5E20;
+        }
+        .tag-blue {
+            background: #BBDEFB;
+            color: #0D47A1;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 22px;
+            padding-left: 15px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--gold);
+        }
+        .quarter-label {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 1.05em;
+        }
+        ul { padding-left: 22px; }
+        li { margin-bottom: 8px; }
+        .company-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .company-chip {
+            background: #ECEFF1;
+            border: 1px solid #CFD8DC;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.82em;
+            font-weight: 500;
+        }
+        .company-chip.verified {
+            background: #E8F5E9;
+            border-color: #A5D6A7;
+            color: #2E7D32;
+        }
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 50px 0;
+        }
+        footer {
+            background: var(--navy);
+            color: #90A4AE;
+            text-align: center;
+            padding: 30px;
+            font-size: 0.82em;
+            line-height: 1.8;
+        }
+        footer strong { color: var(--gold); }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; max-width: 100%; }
+            header, th, .card, .highlight, .event-card {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            h2 { page-break-after: avoid; }
+            table, .event-card { page-break-inside: avoid; }
+            .content { padding: 30px; }
+        }
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .content { padding: 25px; }
+            header { padding: 35px 25px; }
+            header h1 { font-size: 1.6em; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ═══════════════ HEADER ═══════════════ -->
+    <header>
+        <h1>Strategia B2B: Powermatic & Hawk-Matic</h1>
+        <p class="subtitle">Analiza Rynku Polskiego · Plan Akwizycji Partnerów · Kalendarz Targów 2024–2027</p>
+        <div class="badge">POUFNE | BILLS SP. Z O.O. | OSTRZESZÓW</div>
+    </header>
+
+    <div class="content">
+
+        <!-- ═══════════════ 1. EXECUTIVE SUMMARY ═══════════════ -->
+        <h2>1. Executive Summary & Architektura Rynku</h2>
+        <p>Rynek akcesoriów RYO w Polsce jest rozdrobniony, ale wysoce ustrukturyzowany. Jako <strong>jedyny autoryzowany dystrybutor</strong> Powermatic w PL i CEE, BILLS posiada absolutny monopol na legalny serwis i gwarancję — główny oręż w walce z szarą strefą.</p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h4>🏢 Tier 1: Giganci FMCG / Tytoniowi</h4>
+                <p><em>Polski Tytoń, King Hurt, ZAS-POL, Paso Polska</em></p>
+                <p>Ogromna siła logistyczna. Akcesoria to „cross-sell" przy głównym asortymencie tytoniowym.</p>
+            </div>
+            <div class="card card-blue">
+                <h4>💨 Tier 2: Liderzy Vape B2B</h4>
+                <p><em>CK Complex, Bitlogic, FHPD, E-Dym, E-Tabak</em></p>
+                <p>Gotowe panele B2B. Brakuje im marek premium z pełnym wsparciem serwisowym.</p>
+            </div>
+            <div class="card card-green">
+                <h4>🌿 Tier 3: Headshop & Premium</h4>
+                <p><em>Wujo, Cannmedia, Vaporshop, Joint Brothers</em></p>
+                <p>Wysoka marża, rygorystyczna kontrola marek. Idealni do pozycjonowania Powermatic jako „cult brand".</p>
+            </div>
+            <div class="card card-red">
+                <h4>🏬 Tier 4: Sieci Detaliczne</h4>
+                <p><em>eSmoking World, SMOKE, TRAFIKA, eCygaretka</em></p>
+                <p>Setki punktów styku z konsumentem. Kluczowe dla widoczności i powtarzalnego wolumenu.</p>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <strong>🛡️ Przewaga BILLS (Unfair Advantage):</strong><br>
+            „Rynek jest zalewany podróbkami. Kupując od BILLS, zyskujesz 100% oryginalność, polski serwis gwarancyjny i ochronę marży przed dumpingiem cenowym z importu równoległego. Weryfikacja: <strong>tel. 730 988 994</strong>."
+        </div>
+
+        <!-- ═══════════════ 2. TOP 12 ═══════════════ -->
+        <h2>2. Priorytetowa Matryca Akwizycji (TOP 12)</h2>
+        <table>
+            <thead>
+                <tr><th>#</th><th>Partner</th><th>Region</th><th>Kluczowy Pitch</th><th>Kontakt</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td><strong>CK Complex</strong></td><td>Lubuskie</td><td>120+ sklepów, 442 mln zł. Powermatic dopełni ofertę B2B.</td><td>+48 510 329 228</td></tr>
+                <tr><td>2</td><td><strong>eSmoking World</strong></td><td>Wielkopolskie</td><td>Synergia logistyczna (Ostrzeszów). 400 punktów.</td><td>+48 62 738 88 88</td></tr>
+                <tr><td>3</td><td><strong>Bitlogic / iSmoking</strong></td><td>Lubuskie</td><td>Lider EU vape. Potrzebują lidera RYO.</td><td>hurtownia@bitlogic.pl</td></tr>
+                <tr><td>4</td><td><strong>Polski Tytoń S.A.</strong></td><td>Mazowieckie</td><td>Tysiące punktów FMCG. Wysokomarżowy upsell.</td><td>sekretariat@polskityton.pl</td></tr>
+                <tr><td>5</td><td><strong>King Hurt</strong></td><td>Zachodniopomorskie</td><td>8 województw, 20 oddziałów. Naturalny cross-sell.</td><td>bok@kinghurt.pl</td></tr>
+                <tr><td>6</td><td><strong>Cannmedia / Bletki</strong></td><td>Ogólnopolska</td><td>Premium headshop. Klienci szukają najlepszych maszynek.</td><td>sklep@bletki.com</td></tr>
+                <tr><td>7</td><td><strong>Wujo.pl</strong></td><td>Ogólnopolska</td><td>3500+ SKU. Powermatic = brakujące ogniwo.</td><td>hurt.wujo.pl</td></tr>
+                <tr><td>8</td><td><strong>Vaporshop / ULTI-PRO</strong></td><td>Śląskie</td><td>Dystrybutor PAX. Ten sam profil premium.</td><td>sklep@vaporshop.pl</td></tr>
+                <tr><td>9</td><td><strong>Bongogo.pl</strong></td><td>Zachodniopomorskie</td><td>Już sprzedają Powermatic. Bezpośrednia relacja = lepsza cena.</td><td>kontakt@bongogo.pl</td></tr>
+                <tr><td>10</td><td><strong>Paso Polska</strong></td><td>Wielkopolskie</td><td>16 województw. Wyłączność na markę.</td><td>hurt@paso.pl</td></tr>
+                <tr><td>11</td><td><strong>ZAS-POL</strong></td><td>Ogólnopolska</td><td>Dystrybutor „Wielkiej Czwórki". Logiczny cross-sell.</td><td>hurtplus.pl</td></tr>
+                <tr><td>12</td><td><strong>FHPD</strong></td><td>Dolnośląskie</td><td>Wrocław (2,9 mln). Dedykowany premium partner.</td><td>tel. 534 922 566</td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <!-- ═══════════════ 3. TARGI I WYDARZENIA ═══════════════ -->
+        <h2>3. Targi Branżowe & Wydarzenia (2024–2027)</h2>
+        <p>Poniżej kompletny kalendarz kluczowych wydarzeń, na których prezentowane są akcesoria tytoniowe, maszynki do nabijania, gilzy i produkty headshop. <strong>W Polsce nie istnieją dedykowane targi wyłącznie dla nabijarek</strong> — produkty te są podkategorią na większych wydarzeniach.</p>
+
+        <!-- INTER TABAC -->
+        <div class="event-card">
+            <span class="event-date">19–21 WRZ 2024</span>
+            <span class="event-date" style="background:var(--accent-green);">18–20 WRZ 2025</span>
+            <span class="event-date" style="background:var(--accent-blue);">WRZ 2026 (TBC)</span>
+            <span class="event-date" style="background:#6A1B9A;">WRZ 2027 (TBC)</span>
+            <h3>🌍 InterTabac & InterSupply — Dortmund, Niemcy</h3>
+            <p class="event-location">📍 Messe Dortmund, Westfalenhallen | <strong>Największe targi wyrobów tytoniowych na świecie</strong></p>
+            <p><strong>Profil:</strong> Tytoń, cygara, e-papierosy, akcesoria RYO (nabijarki, zwijarki, gilzy, filtry, bibułki), opakowania, maszyny produkcyjne. Ponad 500 wystawców z 60+ krajów.</p>
+            <p><strong>Dlaczego kluczowe dla BILLS:</strong> Jedyne miejsce, gdzie można spotkać WSZYSTKICH polskich i europejskich dystrybutorów akcesoriów w jednym miejscu. Idealne do weryfikacji partnerów i budowania sieci CEE.</p>
+            <h4>Firmy polskie obecne / odwiedzające (2024–2025):</h4>
+            <div class="company-list">
+                <span class="company-chip verified">Magnus Tobacco (producent gilz)</span>
+                <span class="company-chip verified">MRC Trade (producent filtrów)</span>
+                <span class="company-chip verified">KentDruk (producent gilz, Kęty)</span>
+                <span class="company-chip">BISTA Standard</span>
+                <span class="company-chip">Elenpipe (Przemyśl)</span>
+                <span class="company-chip">King Hurt (Szczecin)</span>
+                <span class="company-chip">Polski Tytoń S.A.</span>
+                <span class="company-chip">Orion Tobacco Poland</span>
+                <span class="company-chip">Tobacco Concept Factory (TCF)</span>
+                <span class="company-chip">Polska Grupa Tytoniowa (PGT)</span>
+                <span class="company-chip">ZAS-POL / HurtPlus</span>
+                <span class="company-chip">Paso Polska</span>
+            </div>
+            <p style="margin-top:12px;"><strong>Firmy międzynarodowe (konkurencja / partnerzy):</strong></p>
+            <div class="company-list">
+                <span class="company-chip">OCB (Republic Technologies, FR)</span>
+                <span class="company-chip">RAW / HBI (USA)</span>
+                <span class="company-chip">Rizla / Imperial Brands</span>
+                <span class="company-chip">Gizeh (Niemcy)</span>
+                <span class="company-chip">Mascotte (Holandia)</span>
+                <span class="company-chip">Top Tobacco (NL)</span>
+                <span class="company-chip">JTI / PMI / BAT (stoiska korporacyjne)</span>
+            </div>
+        </div>
+
+        <!-- VAPE EXPO POLAND -->
+        <div class="event-card">
+            <span class="event-date">31 SIE – 1 WRZ 2024</span>
+            <span class="event-date" style="background:var(--accent-green);">WIOSNA/LATO 2025</span>
+            <span class="event-date" style="background:var(--accent-blue);">2026 (TBC)</span>
+            <h3>💨 Vape Expo Poland — Warszawa</h3>
+            <p class="event-location">📍 EXPO XXI / Ptak Warsaw Expo, Warszawa</p>
+            <p><strong>Profil:</strong> E-papierosy, liquidy, hardware vape, ale <strong>coraz więcej stoisk z akcesoriami tytoniowymi RYO</strong> (gilzy, nabijarki, bibułki premium).</p>
+            <h4>Firmy obecne / odwiedzające:</h4>
+            <div class="company-list">
+                <span class="company-chip verified">CK Complex (Zielona Góra)</span>
+                <span class="company-chip verified">Bitlogic / iSmoking</span>
+                <span class="company-chip verified">FHPD (Wrocław)</span>
+                <span class="company-chip">E-Dym</span>
+                <span class="company-chip">E-Tabak (Rzeszów)</span>
+                <span class="company-chip">Liquido</span>
+                <span class="company-chip">Mercato Hurt</span>
+                <span class="company-chip">Vape Point (Wrocław)</span>
+                <span class="company-chip">eSmoking World / CHIC</span>
+                <span class="company-chip">Wujo.pl</span>
+                <span class="company-chip">Vaporshop / ULTI-PRO (Rybnik)</span>
+            </div>
+        </div>
+
+        <!-- WEEDWEEK DAYS -->
+        <div class="event-card">
+            <span class="event-date">MAJ 2024</span>
+            <span class="event-date" style="background:var(--accent-green);">23–25 MAJ 2025</span>
+            <span class="event-date" style="background:var(--accent-blue);">MAJ 2026 (TBC)</span>
+            <span class="event-date" style="background:#6A1B9A;">MAJ 2027 (TBC)</span>
+            <h3>🌿 WeedWeek DAYS — Warszawa</h3>
+            <p class="event-location">📍 Hala Odlewnia / EXPO, Warszawa | <strong>Największy festiwal konopny i headshop w Polsce</strong></p>
+            <p><strong>Profil:</strong> Akcesoria do palenia: bibułki, filtry, gilzy, lufki, rolling boardy, nabijarki manualne i elektryczne, CBD, waporyzatory, szkło.</p>
+            <h4>Firmy obecne / odwiedzające:</h4>
+            <div class="company-list">
+                <span class="company-chip verified">Wujo.pl (3500+ SKU)</span>
+                <span class="company-chip verified">Cannmedia / Bletki.com</span>
+                <span class="company-chip verified">Joint Brothers (Katowice)</span>
+                <span class="company-chip">JarajTo</span>
+                <span class="company-chip">True Smoke</span>
+                <span class="company-chip">Cbdking (Wrocław)</span>
+                <span class="company-chip">Bongogo.pl (Szczecin)</span>
+                <span class="company-chip">Shisha Sklep (Warszawa)</span>
+                <span class="company-chip">Verk Store</span>
+                <span class="company-chip">Dopalenia.pl / Gabimix</span>
+            </div>
+        </div>
+
+        <!-- WEEDFEST -->
+        <div class="event-card">
+            <span class="event-date">2024 (edycja)</span>
+            <span class="event-date" style="background:var(--accent-green);">2025 (edycja)</span>
+            <h3>🌿 WeedFest Warsaw — Warszawa</h3>
+            <p class="event-location">📍 Warszawa (lokalizacja zmienna)</p>
+            <p><strong>Profil:</strong> Podobny do WeedWeek. Silna obecność marek headshopowych i RYO. Mniejsza skala, ale wysoka koncentracja decydentów.</p>
+            <div class="company-list">
+                <span class="company-chip">Wujo.pl</span>
+                <span class="company-chip">Cannmedia</span>
+                <span class="company-chip">Joint Brothers</span>
+                <span class="company-chip">Lokalne headshopy</span>
+            </div>
+        </div>
+
+        <!-- TARGI FMCG -->
+        <div class="event-card">
+            <span class="event-date">CYKLICZNIE 2024–2027</span>
+            <h3>🏢 Targi FMCG / Convenience (Polish Convenience Trade)</h3>
+            <p class="event-location">📍 Różne lokalizacje (Poznań, Warszawa, Kielce)</p>
+            <p><strong>Profil:</strong> Wydarzenia dla niezależnego handlu detalicznego. Akcesoria tytoniowe (w tym nabijarki) prezentowane jako uzupełnienie portfolio FMCG.</p>
+            <div class="company-list">
+                <span class="company-chip verified">Polski Tytoń S.A.</span>
+                <span class="company-chip verified">King Hurt</span>
+                <span class="company-chip verified">ZAS-POL</span>
+                <span class="company-chip">Paso Polska</span>
+                <span class="company-chip">Lima S.A.</span>
+                <span class="company-chip">West Trading</span>
+                <span class="company-chip">PGT (Polska Grupa Tytoniowa)</span>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- ═══════════════ 4. HARMONOGRAM ═══════════════ -->
+        <h2>4. Harmonogram Działań 2026–2027</h2>
+
+        <h3>📅 ROK 2026: Fundamenty i Ekspansja</h3>
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="quarter-label">Q1 (Sty–Mar): Pierwsza Fala</span>
+                <ul>
+                    <li>Finalizacja ofert B2B 2026 (progi rabatowe, darmowa dostawa).</li>
+                    <li>Kampania outbound do <strong>TOP 12</strong>.</li>
+                    <li>Weryfikacja danych w regionach słabo pokrytych (warmińsko-maz., podlaskie).</li>
+                    <li>Podpisanie umów ramowych: TRAFIKA, SMOKE, eCygaretka.</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <span class="quarter-label">Q2 (Kwi–Cze): Targi Krajowe</span>
+                <ul>
+                    <li><strong>MAJ:</strong> Udział / sponsoring na <em>WeedWeek DAYS 2026</em> (Warszawa).</li>
+                    <li><strong>CZE:</strong> Udział w <em>Vape Expo Poland 2026</em> (Warszawa).</li>
+                    <li>Onboarding partnerów vape (CK Complex, Bitlogic, FHPD).</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <span class="quarter-label">Q3 (Lip–Wrz): Ekspansja Międzynarodowa</span>
+                <ul>
+                    <li>Audyt półroczny. Weryfikacja compliance KAS.</li>
+                    <li>Promocja flagowych modeli (Powermatic V+ / nowości 2026).</li>
+                    <li><strong>WRZ:</strong> <em>InterTabac & InterSupply</em> (Dortmund) — kluczowe dla CEE.</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <span class="quarter-label">Q4 (Paź–Gru): Sezon & Renegocjacje</span>
+                <ul>
+                    <li>Kampania B2B: pakiet maszynka + zapas gilz/filtrów.</li>
+                    <li>Renegocjacje z „Drugą Falą" (PGT, Elenpipe, Dopalenia.pl).</li>
+                    <li>Zamknięcie roku, planowanie budżetów 2027.</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>📅 ROK 2027: Dominacja i Optymalizacja</h3>
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="quarter-label">Q1 (Sty–Mar): Optymalizacja</span>
+                <ul>
+                    <li>Analiza wyników 2026. Usprawnienia logistyczne.</li>
+                    <li>Pakiety cross-sellingowe z MRC Trade, Magnus Tobacco, KentDruk.</li>
+                    <li>Akwizycja kolejnej fali partnerów regionalnych.</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <span class="quarter-label">Q2 (Kwi–Cze): Utrwalenie Pozycji</span>
+                <ul>
+                    <li>Wprowadzenie limitowanych edycji Powermatic / Hawk-Matic.</li>
+                    <li><strong>MAJ:</strong> <em>WeedWeek DAYS 2027</em> — jako ugruntowany partner.</li>
+                    <li><strong>CZE:</strong> <em>Vape Expo Poland 2027</em> — case studies z partnerami.</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <span class="quarter-label">Q3 (Lip–Wrz): Compliance & Dominacja</span>
+                <ul>
+                    <li>Akcja edukacyjna: „Jak rozpoznać oryginalny produkt BILLS".</li>
+                    <li><strong>WRZ:</strong> <em>InterTabac 2027</em> (Dortmund) — umacnianie CEE.</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <span class="quarter-label">Q4 (Paź–Gru): Strategiczne Partnerstwa</span>
+                <ul>
+                    <li>Negocjacje umów 2–3 letnich (Polski Tytoń, King Hurt, CK Complex).</li>
+                    <li>Maksymalizacja wolumenu przed sezonem świątecznym.</li>
+                    <li>Strategiczne planowanie 2028.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- ═══════════════ 5. KATALOG FIRM Z TARGÓW ═══════════════ -->
+        <h2>5. Pełny Katalog Firm z Wydarzeń Branżowych</h2>
+        <p>Zestawienie wszystkich zidentyfikowanych podmiotów obecnych na targach 2024–2025, z podziałem na kategorię działalności:</p>
+
+        <h3>🏭 Producenci Gilz, Filtrów i Akcesoriów RYO</h3>
+        <table>
+            <thead><tr><th>Firma</th><th>Siedziba</th><th>Obecność na targach</th><th>Kontakt</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Magnus Tobacco</strong></td><td>Ogólnopolska</td><td>InterTabac 2024, 2025</td><td>magnustobacco.pl</td></tr>
+                <tr><td><strong>MRC Trade</strong></td><td>Ogólnopolska</td><td>InterTabac 2024</td><td>mrctrade.pl</td></tr>
+                <tr><td><strong>KentDruk (P.W.)</strong></td><td>Kęty, Małopolskie</td><td>InterTabac 2024, 2025</td><td>biuro@kentdruk.pl</td></tr>
+                <tr><td><strong>Orion Tobacco Poland</strong></td><td>Goszczyn, Mazowieckie</td><td>InterTabac 2024</td><td>orion@orion.mail.pl</td></tr>
+                <tr><td><strong>Tobacco Concept Factory (TCF)</strong></td><td>Ogólnopolska</td><td>InterTabac, FMCG</td><td>tcf.pl</td></tr>
+                <tr><td><strong>Trezo Sp. z o.o.</strong></td><td>Sosnowiec, Śląskie</td><td>Vape Expo, InterTabac</td><td>hello@trezo.pl</td></tr>
+            </tbody>
+        </table>
+
+        <h3>🚛 Dystrybutorzy i Hurtownie Tytoniu / FMCG</h3>
+        <table>
+            <thead><tr><th>Firma</th><th>Siedziba</th><th>Obecność na targach</th><th>Kontakt</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Polski Tytoń S.A.</strong></td><td>Radom + 14 oddziałów</td><td>InterTabac, FMCG</td><td>sekretariat@polskityton.pl</td></tr>
+                <tr><td><strong>King Hurt</strong></td><td>Szczecin + 20 oddziałów</td><td>InterTabac, FMCG</td><td>bok@kinghurt.pl</td></tr>
+                <tr><td><strong>ZAS-POL / HurtPlus</strong></td><td>Ogólnopolska</td><td>FMCG</td><td>hurtplus.pl</td></tr>
+                <tr><td><strong>Paso Polska</strong></td><td>Sierosław, Wielkopolskie</td><td>FMCG, InterTabac</td><td>hurt@paso.pl</td></tr>
+                <tr><td><strong>PGT (Polska Grupa Tytoniowa)</strong></td><td>Myślibórz + 5 oddziałów</td><td>InterTabac, FMCG</td><td>biuro@polskagt.pl</td></tr>
+                <tr><td><strong>West Trading</strong></td><td>Zachodniopomorskie</td><td>FMCG</td><td>westtrading.pl</td></tr>
+                <tr><td><strong>Lima S.A.</strong></td><td>Warszawa</td><td>FMCG</td><td>lima.pl</td></tr>
+            </tbody>
+        </table>
+
+        <h3>💨 Dystrybutorzy Vape / E-papierosów (z akcesoriami RYO)</h3>
+        <table>
+            <thead><tr><th>Firma</th><th>Siedziba</th><th>Obecność na targach</th><th>Kontakt</th></tr></thead>
+            <tbody>
+                <tr><td><strong>CK Complex</strong></td><td>Zielona Góra</td><td>Vape Expo 2024, 2025</td><td>+48 510 329 228</td></tr>
+                <tr><td><strong>Bitlogic / iSmoking</strong></td><td>Lubuskie</td><td>Vape Expo 2024, 2025</td><td>hurtownia@bitlogic.pl</td></tr>
+                <tr><td><strong>FHPD</strong></td><td>Wrocław</td><td>Vape Expo 2024, 2025</td><td>tel. 534 922 566</td></tr>
+                <tr><td><strong>E-Tabak</strong></td><td>Rzeszów</td><td>Vape Expo 2024</td><td>biuro@e-tabak.pl</td></tr>
+                <tr><td><strong>E-Dym</strong></td><td>Ogólnopolska</td><td>Vape Expo</td><td>e-dym.pl</td></tr>
+                <tr><td><strong>Vape Point</strong></td><td>Wrocław</td><td>Vape Expo 2024</td><td>kontakt@vapepoint.pl</td></tr>
+                <tr><td><strong>eSmoking World / CHIC</strong></td><td>Ostrzeszów</td><td>Vape Expo, FMCG</td><td>+48 62 738 88 88</td></tr>
+            </tbody>
+        </table>
+
+        <h3>🌿 Headshop & Akcesoria Premium</h3>
+        <table>
+            <thead><tr><th>Firma</th><th>Siedziba</th><th>Obecność na targach</th><th>Kontakt</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Wujo.pl</strong></td><td>Ogólnopolska</td><td>WeedWeek 2024, 2025</td><td>hurt.wujo.pl</td></tr>
+                <tr><td><strong>Cannmedia / Bletki.com</strong></td><td>Ogólnopolska</td><td>WeedWeek 2024, 2025</td><td>sklep@bletki.com</td></tr>
+                <tr><td><strong>Joint Brothers</strong></td><td>Katowice, Śląskie</td><td>WeedWeek 2024, 2025</td><td>tel. 721 430 027</td></tr>
+                <tr><td><strong>Vaporshop / ULTI-PRO</strong></td><td>Rybnik, Śląskie</td><td>Vape Expo, WeedWeek</td><td>sklep@vaporshop.pl</td></tr>
+                <tr><td><strong>Bongogo.pl</strong></td><td>Szczecin</td><td>WeedWeek 2024</td><td>kontakt@bongogo.pl</td></tr>
+                <tr><td><strong>JarajTo</strong></td><td>Ogólnopolska</td><td>WeedWeek 2024, 2025</td><td>jarajto.pl</td></tr>
+                <tr><td><strong>Dopalenia.pl / Gabimix</strong></td><td>Konstantynów Łódzki</td><td>WeedWeek, Vape Expo</td><td>sklep@dopalenia.pl</td></tr>
+                <tr><td><strong>Cbdking</strong></td><td>Wrocław</td><td>WeedWeek 2024</td><td>kontakt@cbdking.pl</td></tr>
+                <tr><td><strong>Verk Store</strong></td><td>Ogólnopolska (online)</td><td>WeedWeek</td><td>verk.store</td></tr>
+                <tr><td><strong>Pavolt.pl</strong></td><td>Ogólnopolska (online)</td><td>WeedWeek</td><td>pavolt.pl</td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <!-- ═══════════════ 6. PLAYBOOK ═══════════════ -->
+        <h2>6. Playbook Sprzedażowy: 6 Filarów</h2>
+        <div class="grid-3">
+            <div class="card"><h4>1. Wyłączność</h4><p>Tylko BILLS = legalny łańcuch dostaw + polski serwis.</p></div>
+            <div class="card"><h4>2. Anti-Counterfeit</h4><p>Weryfikacja telefoniczna (730 988 994). Ochrona przed podróbkami.</p></div>
+            <div class="card"><h4>3. Pełen Portfel</h4><p>Mini → III+ → IV+ → V+ (2026). Każdy segment cenowy.</p></div>
+            <div class="card"><h4>4. Logistyka PL</h4><p>Wysyłka 24h z magazynu w Ostrzeszowie. Darmowa dostawa.</p></div>
+            <div class="card"><h4>5. Brand Pull</h4><p>Powermatic = marka kultowa. Konsumenci sami szukają.</p></div>
+            <div class="card"><h4>6. Ochrona Marży</h4><p>Kontrola dystrybucji = brak wojen cenowych z importem.</p></div>
+        </div>
+
+        <div class="highlight-blue">
+            <strong>🎯 Rekomendacja Targowa dla BILLS:</strong><br>
+            Zamiast kosztownego samodzielnego stoiska, zaproponuj <strong>współprezentację</strong> na stoiskach TOP 12 partnerów (np. CK Complex, eSmoking World, King Hurt). Koszt: ułamek samodzielnego udziału. Efekt: wiarygodność „marka rekomendowana przez lidera dystrybucji".
+        </div>
+
+        <!-- ═══════════════ 7. KPI ═══════════════ -->
+        <h2>7. Kluczowe Kamienie Milowe (KPI)</h2>
+        <table>
+            <thead><tr><th>Termin</th><th>Cel</th><th>Miernik</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Q2 2026</strong></td><td>Wdrożenie min. 5 z TOP 12 do aktywnego zamawiania</td><td>Cykliczne zamówienia B2B (min. 1×/mies.)</td></tr>
+                <tr><td><strong>Q3 2026</strong></td><td>Redukcja nieautoryzowanych ofert Allegro/OLX o 50%</td><td>Monitoring cenowy + zgłoszenia</td></tr>
+                <tr><td><strong>Q4 2026</strong></td><td>Obecność na 2+ targach krajowych</td><td>WeedWeek + Vape Expo</td></tr>
+                <tr><td><strong>Q3 2027</strong></td><td>Status „domyślnego dostawcy" w 3 z 5 sieci detalicznych</td><td>SMOKE, TRAFIKA, eSmoking World, Tabak PL, eCygaretka</td></tr>
+                <tr><td><strong>Q4 2027</strong></td><td>Umowy 2–3 letnie z min. 3 gigantami FMCG</td><td>Polski Tytoń, King Hurt, CK Complex</td></tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer>
+        <p><strong>Raport Strategiczny B2B | BILLS Sp. z o.o.</strong></p>
+        <p>ul. Ignacego Daszyńskiego 31, 63-500 Ostrzeszów | tel. 730 988 994 | hurt@bills.pl</p>
+        <p>Źródła: KRS, CEIDG, REGON, InterTabac, Vape Expo, WeedWeek, katalogi B2B, marketplace.<br>
+        Dane zweryfikowane: lipiec 2025. Status: <strong>POUFNE</strong>.</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
