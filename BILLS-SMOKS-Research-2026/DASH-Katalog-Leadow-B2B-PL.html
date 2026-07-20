@@ -864,10 +864,15 @@
             <!-- Filters Panel -->
             <div class="filter-panel">
                 <div class="filter-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.875rem;">
-                    <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.35rem;">
-                        <i class="ri-filter-2-line" style="color: var(--accent); font-size: 0.95rem;"></i> Filtry i Wyszukiwanie
-                    </span>
-                    <span id="filter-results-count" class="badge badge-priority-b" style="display: none; font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.6rem;">Znaleziono: 0 z 0</span>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.35rem;">
+                            <i class="ri-filter-2-line" style="color: var(--accent); font-size: 0.95rem;"></i> Filtry i Wyszukiwanie
+                        </span>
+                        <span id="filter-results-count" class="badge badge-priority-b" style="display: none; font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 0.25rem;">Znaleziono: 0 z 0</span>
+                    </div>
+                    <a href="#" id="reset-filters" style="font-size: 0.72rem; color: var(--text-secondary); text-decoration: none; font-weight: 600; opacity: 0.4; pointer-events: none; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.2rem;">
+                        <i class="ri-refresh-line"></i> Resetuj filtry
+                    </a>
                 </div>
                 <div class="filter-grid">
                     
@@ -908,15 +913,12 @@
                     </div>
 
                     <!-- Status -->
-                    <div class="filter-group" style="position: relative;">
+                    <div class="filter-group">
                         <label for="filter-status">Status</label>
                         <select id="filter-status" class="filter-input">
                             <option value="all">Wszystkie</option>
                             <!-- Dynamic options -->
                         </select>
-                        <a href="#" id="reset-filters" style="position: absolute; right: 0; bottom: -1.15rem; font-size: 0.72rem; color: var(--text-secondary); text-decoration: none; font-weight: 600; opacity: 0.4; pointer-events: none; transition: all 0.2s ease; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.2rem;">
-                            <i class="ri-refresh-line"></i> Resetuj filtry
-                        </a>
                     </div>
                 </div>
             </div>
