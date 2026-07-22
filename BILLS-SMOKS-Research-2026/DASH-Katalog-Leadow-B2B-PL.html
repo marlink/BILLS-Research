@@ -11136,7 +11136,7 @@
         let expandedRowId = null;
         
         let currentPage = 1;
-        let pageSize = -1;
+        let pageSize = 50;
 
         // Theme management
         const htmlEl = document.documentElement;
@@ -11309,7 +11309,7 @@
 
         // Auto-load inlined data — runs immediately (script is at bottom of body,
         // DOM is already ready; DOMContentLoaded would never fire here)
-        (function initDashboard() {
+        function initDashboard() {
             console.log('[Dashboard] initDashboard() called');
             if (typeof leadsData !== 'undefined' && Array.isArray(leadsData) && leadsData.length > 0) {
                 console.log(`[Dashboard] Auto-loading ${leadsData.length} inlined records`);
@@ -11325,9 +11325,13 @@
             } else {
                 console.log('[Dashboard] No inlined data — showing dropzone');
             }
-        })();
+        }
 
-
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDashboard);
+        } else {
+            initDashboard();
+        }
 
         function tryToFetchNext(paths, index) {
             if (index >= paths.length) {
