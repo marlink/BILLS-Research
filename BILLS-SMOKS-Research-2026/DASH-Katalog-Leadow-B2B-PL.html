@@ -821,14 +821,14 @@
         </header>
 
         <!-- Dropzone: label for native click, or drag & drop -->
-        <label for="file-picker" class="dropzone" id="drop-zone">
+        <label for="file-picker" class="dropzone" id="drop-zone" style="display: none;">
             <i class="ri-drag-drop-line"></i>
             <h3>Przeciągnij i upuść plik CSV tutaj</h3>
             <p>lub kliknij, aby wybrać plik z dysku</p>
         </label>
 
         <!-- Dashboard Panel (Only visible when data is loaded) -->
-        <div id="dashboard-content" style="display: none;">
+        <div id="dashboard-content" style="display: block;">
             
             <!-- Statistics Grid -->
             <div class="stats-grid">
@@ -11136,7 +11136,7 @@
         let expandedRowId = null;
         
         let currentPage = 1;
-        const pageSize = 50;
+        let pageSize = -1;
 
         // Theme management
         const htmlEl = document.documentElement;
@@ -11489,7 +11489,7 @@
             populateSelect('filter-status', Array.from(statuses).sort());
             
             // Attach event listeners
-            ['filter-search', 'filter-priority', 'filter-region', 'filter-scale', 'filter-status'].forEach(id => {
+            ['filter-search', 'filter-priority', 'filter-region', 'filter-scale', 'filter-status', 'filter-pagesize'].forEach(id => {
                 document.getElementById(id).addEventListener('input', () => {
                     currentPage = 1;
                     applyFilters();
@@ -11615,6 +11615,8 @@
             const regionVal = document.getElementById('filter-region').value;
             const scaleVal = document.getElementById('filter-scale').value;
             const statusVal = document.getElementById('filter-status').value;
+            const pageSizeSelect = document.getElementById('filter-pagesize');
+            if (pageSizeSelect) pageSize = parseInt(pageSizeSelect.value, 10);
             
             filteredData = leadsData.filter(r => {
                 // Expanded Search query match
