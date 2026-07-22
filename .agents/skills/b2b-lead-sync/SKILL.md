@@ -1,7 +1,7 @@
 ---
 name: b2b-lead-sync
 description: |-
-  Automatically ingest, normalize, and add/update B2B company leads into the master catalog (07-MASTER-Katalog-Wszystkich-Leadow-B2B-PL.csv) and dynamically synchronize the interactive e-commerce dashboard (DASH-Katalog-Leadow-B2B-PL.html).
+  Automatically ingest, normalize, and add/update B2B company leads into the master catalog (07-MASTER-Katalog-Wszystkich-Leadow-B2B-PL.csv) and dynamically synchronize the interactive e-commerce dashboard (DASH-Katalog-Leadow-B2B-PL.html). Includes real-time CSV file watching.
   Use this skill whenever:
   1. The user asks to add, update, or import new company leads or wholesale partners into the BILLS B2B database.
   2. Research findings or scraped company records (NIP, KRS, CEIDG, website, products, score) need to be stored in the master CSV.
@@ -12,7 +12,7 @@ metadata:
   publisher: bills
 ---
 
-# B2B Lead Ingestion & Dashboard Synchronization Skill
+# B2B Lead Ingestion & Real-Time Dashboard Synchronization Skill
 
 This skill provides an automated workflow to safely append or update Polish B2B leads, wholesalers, and importers in the master repository:
 - **Master CSV**: `BILLS-SMOKS-Research-2026/07-MASTER-Katalog-Wszystkich-Leadow-B2B-PL.csv`
@@ -20,14 +20,19 @@ This skill provides an automated workflow to safely append or update Polish B2B 
 
 ---
 
-## 🛠️ Automated Execution Script
+## ⚡ Real-Time Auto-Sync Trigger Options
 
-The core synchronization script is located at:
+### Option A: Background File Watcher (Automatic Trigger on CSV Edit)
+To automatically update `DASH-Katalog-Leadow-B2B-PL.html` **every time you edit and save** `07-MASTER-Katalog-Wszystkich-Leadow-B2B-PL.csv` (e.g. in Excel, VS Code, or Numbers), launch the background watcher:
+
 ```bash
-python3 .agents/skills/b2b-lead-sync/scripts/sync_b2b_leads.py
+python3 .agents/skills/b2b-lead-sync/scripts/watch_and_sync.py
 ```
+*The watcher monitors the file timestamp and instantly regenerates the HTML dashboard the moment any change is saved.*
 
-### Usage Options:
+---
+
+### Option B: Programmatic & Agent Sync Script (`sync_b2b_leads.py`)
 
 1. **Add/Update a Single Lead via JSON String**:
    ```bash
@@ -58,47 +63,7 @@ python3 .agents/skills/b2b-lead-sync/scripts/sync_b2b_leads.py
    python3 .agents/skills/b2b-lead-sync/scripts/sync_b2b_leads.py --add-file path/to/leads.json
    ```
 
-3. **Re-sync CSV Master to Dashboard HTML**:
+3. **Instant Manual Re-Sync**:
    ```bash
    python3 .agents/skills/b2b-lead-sync/scripts/sync_b2b_leads.py --sync-only
    ```
-
----
-
-## 📋 Required Schema Fields
-
-All leads must follow the 25 standard columns:
-- `Rank`: Auto-assigned based on `Score` descending order.
-- `Priorytet`: Priority tier (`A1 — kontakt natychmiast`, `A2 — kontakt w 7 dni`, `B — kampania regionalna`, `C — weryfikacja i nurturing`, `D — niski priorytet/wykluczyć`).
-- `Score`: Numerical rating (1–100).
-- `Firma`: Company trade & legal name.
-- `Relacja`: Relationship type (`Potencjalny reseller / odbiorca hurtowy`, `Partner dystrybucyjny/importer`, `Możliwy konflikt produktowy`).
-- `Segment`: Segment ID (`S1 — RYO/MYO, gilzy i nabijarki`, `S2 — Hurtownie tytoniowe/FMCG`, etc.).
-- `Kanał`: Distribution channel (`Hurt B2B regionalny`, `Hurt ogólnopolski`, `Importer/dystrybutor krajowy`).
-- `Województwo`: Polish Voivodeship or `Ogólnopolska`.
-- `Miasto`: City location.
-- `Skala`: Business scale (`Duży`, `Średni`, `Mały`).
-- `Email`: Contact email address(es).
-- `Telefon`: Contact phone number(s).
-- `Osoba/Dział decyzyjny`: Board members or purchasing managers.
-- `Stanowisko`: Job position.
-- `WWW`: Website URL.
-- `Adres`: Registered business address.
-- `NIP`: 10-digit Polish Tax ID (cleaned of trailing `.0`).
-- `KRS`: National Court Register number.
-- `Produkty/marki`: Main brands / products distributed.
-- `Status`: Lead status (`Nowy`, `Do weryfikacji`, `Wykluczony`).
-- `Owner`: Lead owner (default: `BILLS — hurt@bills.pl`).
-- `Następny krok`: Recommended action step.
-- `Uzasadnienie potencjału`: Rationale for score & partnership fit.
-- `Źródła`: Source URLs / verification links.
-- `Uwagi`: Notes, VIES status, or Allegro profile notes.
-
----
-
-## ⚡ Agent Workflow Summary
-
-Whenever new leads are discovered or edited:
-1. Parse company details & NIP/KRS validation.
-2. Run `sync_b2b_leads.py` with `--add-json` or `--add-file`.
-3. Confirm that both `07-MASTER-Katalog-Wszystkich-Leadow-B2B-PL.csv` and `DASH-Katalog-Leadow-B2B-PL.html` have been updated cleanly.
