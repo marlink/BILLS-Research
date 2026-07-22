@@ -27,9 +27,12 @@ def clean_value(val):
     if val is None:
         return ""
     s = str(val).strip()
+    # Replace raw unescaped line breaks in cell values to prevent JS string SyntaxErrors
+    s = s.replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
+    s = re.sub(r'\s+', ' ', s)
     if s.endswith('.0') and s[:-2].isdigit():
         s = s[:-2]
-    return s
+    return s.strip()
 
 def normalize_lead(lead_dict):
     normalized = {}
